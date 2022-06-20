@@ -49,7 +49,7 @@ const LoginPage = (props) => {
                         <h1 className="create-your" style={{color: "black"}}>Create your</h1>
                         <span className="title-page" style={{color: "#b0afaf"}}>Study</span>
                         <span className="title-page" style={{color: "#b0afaf"}}>Plan.</span>
-                        <a href={"/courses"}><p>Check the courses</p></a>
+                        <a href={"/courses"}><p>Discover the courses</p></a>
                     </div>
                 </Col>
                 <Col>

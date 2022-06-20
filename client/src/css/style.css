@@ -91,6 +91,10 @@ h1{
     color: white !important;
 }
 
+.App {
+    text-align: center;
+}
+
 #study-plan{
     margin-bottom: -2rem !important;
 }

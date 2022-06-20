@@ -1,6 +1,4 @@
-import './App.css';
 import './css/style.css'
-import CourseList from "./components/table/CourseList";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row} from "react-bootstrap";
 import NavigationBar from "./components/NavigationBar";
