@@ -26,12 +26,17 @@ function App() {
                     </Row>
                     <Row>
                         <Routes>
-                            <Route exact path='/' element={user ? <Homepage user={user}/> : <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
-                            <Route exact path='/home' element={user ? <Homepage user={user}/> : <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
+                            <Route exact path='/' element={user ? <Homepage user={user}/> :
+                                <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
+                            <Route exact path='/home' element={user ? <Homepage user={user}/> :
+                                <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
                             <Route exact path='/courses' element={<CoursesPage/>}/>
-                            <Route exact path='/studyplan/edit' element={user ? <StudyPlanCompiler setUser={setUser} user={user} courseList={courses}/> : <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
-                            <Route exact path='/studyplan/view' element={user ? <StudyPlanViewer setUser={setUser} user={user} courseList={courses}/> : <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
-                            <Route exact path='/studyplan/create' element={user ? <StudyPlanViewer setUser={setUser} user={user} courseList={courses}/> : <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
+                            <Route exact path='/studyplan/edit' element={user ?
+                                <StudyPlanCompiler setUser={setUser} user={user} courseList={courses}/> :
+                                <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
+                            <Route exact path='/studyplan/view' element={user ?
+                                <StudyPlanViewer setUser={setUser} user={user} courseList={courses}/> :
+                                <LoginPage setCourses={setCourses} setUser={setUser}/>}/>
                             <Route path='/*' element={<PageNotFound/>}/>
                         </Routes>
                     </Row>

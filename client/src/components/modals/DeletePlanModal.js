@@ -8,12 +8,13 @@ const DeletePlanModal = (props) => {
 
     const navigate = useNavigate()
     const [showErrorModal, setShowErrorModal] = useState(false)
+
     const handleDeleteClick = () => {
         deletePlan()
             .then((res) => {
                 console.log(res)
 
-                if(res.status === 204){
+                if (res.status === 204) {
                     props.setShow(false)
 
                     props.setUser((user) => {
@@ -35,8 +36,8 @@ const DeletePlanModal = (props) => {
 
     }
 
-     return (
-         <>
+    return (
+        <>
             <GeneralErrorModal show={showErrorModal} setShow={setShowErrorModal}/>
             <Modal show={props.show} onHide={() => props.setShow(false)}>
                 <Modal.Header closeButton>
@@ -49,10 +50,10 @@ const DeletePlanModal = (props) => {
 
                 <Modal.Footer>
                     <Button onClick={handleDeleteClick} variant="outline-danger">Delete</Button>
-                    <Button onClick={() => props.setShow(false) } variant="outline-success">Cancel</Button>
+                    <Button onClick={() => props.setShow(false)} variant="outline-success">Cancel</Button>
                 </Modal.Footer>
             </Modal>
-         </>
+        </>
     )
 }
 

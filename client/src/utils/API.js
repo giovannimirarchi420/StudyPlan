@@ -1,29 +1,27 @@
-
-
 exports.getCourseList = () => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/courses")
-            .then( async (result) => {
+            .then(async (result) => {
                 let ret = await result.json()
                 resolve(ret)
             })
-            .catch( (error) => reject(error))
+            .catch((error) => reject(error))
     })
 }
 
 exports.getPlan = () => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/studyplan")
-            .then( async (result) => {
+            .then(async (result) => {
                 let ret = await result.json()
                 resolve(ret)
             })
-            .catch( (error) => reject(error))
+            .catch((error) => reject(error))
     })
 }
 
 exports.login = (credentials) => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/login", {
             method: "POST",
             headers: {
@@ -31,37 +29,37 @@ exports.login = (credentials) => {
             },
             body: JSON.stringify(credentials),
         })
-            .then( async (result) => {
+            .then(async (result) => {
                 let ret = await result.json()
                 resolve(ret)
             })
-            .catch( (error) => reject(error))
+            .catch((error) => reject(error))
     })
 }
 
 exports.logout = () => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/login", {
             method: "DELETE",
-        }).then( (result) => {
-                resolve(result)
-            })
-            .catch( (error) => reject(error))
+        }).then((result) => {
+            resolve(result)
+        })
+            .catch((error) => reject(error))
     })
 }
 exports.deletePlan = () => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/studyplan", {
             method: "DELETE",
-        }).then( (result) => {
+        }).then((result) => {
             resolve(result)
         })
-            .catch( (error) => reject(error) )
+            .catch((error) => reject(error))
     })
 }
 
 exports.updatePlan = (plan) => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/studyplan/submit", {
             method: "PATCH",
             headers: {
@@ -74,7 +72,7 @@ exports.updatePlan = (plan) => {
     })
 }
 exports.insertPlan = (plan) => {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch("../api/studyplan/submit", {
             method: "POST",
             headers: {
@@ -82,9 +80,9 @@ exports.insertPlan = (plan) => {
             },
             body: JSON.stringify(plan)
         })
-            .then( (result) => {
+            .then((result) => {
                 resolve(result)
             })
-            .catch( (error) => reject(error))
+            .catch((error) => reject(error))
     })
 }

@@ -15,7 +15,7 @@ const Footer = (props) => {
                        href={"https://github.com/giovannimirarchi420/"}
                        target="_blank"><SiGithub/></a>
 
-                    <a style={{ paddingLeft: "20px", textDecoration: "none", color: "#000000"}}
+                    <a style={{paddingLeft: "20px", textDecoration: "none", color: "#000000"}}
                        href={"https://www.instagram.com/_hemek/"}
                        target="_blank"><GrInstagram/></a>
 

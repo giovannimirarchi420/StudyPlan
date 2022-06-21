@@ -28,25 +28,27 @@ const StudyPlanViewer = (props) => {
                     {
                         props.user.studyPlanCompiled ?
                             <CourseList setCfu={setCfu}
-                                     user={props.user}
-                                     viewPlan
-                                     loggedIn
+                                        user={props.user}
+                                        viewPlan
+                                        loggedIn
                             />
-                        :
-                            <Button onClick={ () => navigate("/studyplan/edit") }
+                            :
+                            <Button onClick={() => navigate("/studyplan/edit")}
                                     style={{marginTop: "25vh"}}
                                     variant={"outline-info"}>
                                 Create study plan
                             </Button>
                     }
                     <Row>
-                        <div style={{ paddingTop: "6vh",width: "100%"}}>
+                        <div style={{paddingTop: "6vh", width: "100%"}}>
                             {
                                 props.user.studyPlanCompiled ?
                                     <>
-                                        <Button style={{width: "100%"}} onClick={() => setShowModal(true)} variant="outline-danger">Delete</Button>
+                                        <Button style={{width: "100%"}} onClick={() => setShowModal(true)}
+                                                variant="outline-danger">Delete</Button>
                                         <div style={{height: "10px"}}/>
-                                        <Button style={{width: "100%"}} onClick={() => navigate("/studyplan/edit")} variant="outline-primary">Edit</Button>
+                                        <Button style={{width: "100%"}} onClick={() => navigate("/studyplan/edit")}
+                                                variant="outline-primary">Edit</Button>
                                     </>
                                     :
                                     ""

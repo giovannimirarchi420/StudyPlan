@@ -1,6 +1,6 @@
-import {Button, Col, Row, Stack} from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import {updatePlan, insertPlan} from "../../utils/API";
+import {insertPlan, updatePlan} from "../../utils/API";
 import CourseList from "../table/CourseList";
 import UserCard from "../UserCard";
 import {useNavigate} from "react-router-dom";
@@ -21,10 +21,10 @@ const StudyPlanCompiler = (props) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(props.user.studyPlanCompiled){
+        if (props.user.studyPlanCompiled) {
             setShowModal(false)
         }
-        if(props.user.fullTime){
+        if (props.user.fullTime) {
             setFullTimePlan(true)
         }
     })
@@ -48,7 +48,7 @@ const StudyPlanCompiler = (props) => {
                     res.json().then((json) => {
                         setErrorMessage("An error occurred inserting your plan: \n" + json)
                         setShowErrorModal(true)
-                    }).catch( err => {
+                    }).catch(err => {
                         setErrorMessage("An error occurred inserting your plan, please try again.")
                         setShowErrorModal(true)
                     });
@@ -79,9 +79,10 @@ const StudyPlanCompiler = (props) => {
                     })
                 } else {
                     res.json().then((json) => {
+                        console.log(json)
                         setErrorMessage("An error occurred inserting your plan: \n" + json)
                         setShowErrorModal(true)
-                    }).catch( err => {
+                    }).catch(err => {
                         setErrorMessage("An error occurred inserting your plan, please try again.")
                         setShowErrorModal(true)
                     });
@@ -95,8 +96,8 @@ const StudyPlanCompiler = (props) => {
     }
 
     const insertPlanHandle = () => {
-        if(respectCfuConstraint()){
-            if(!props.user.studyPlanCompiled){
+        if (respectCfuConstraint()) {
+            if (!props.user.studyPlanCompiled) {
                 callInsertPlanAPI(fullTimePlan)
             } else {
                 callUpdatePlanAPI(fullTimePlan)
@@ -109,7 +110,7 @@ const StudyPlanCompiler = (props) => {
     }
 
     const respectCfuConstraint = () => {
-        if( ( fullTimePlan && (cfu >= 60 && cfu <= 80)) || ( !fullTimePlan && (cfu >= 20 && cfu <= 40) ) ) {
+        if ((fullTimePlan && (cfu >= 60 && cfu <= 80)) || (!fullTimePlan && (cfu >= 20 && cfu <= 40))) {
             return true
         } else {
             return false
@@ -119,7 +120,8 @@ const StudyPlanCompiler = (props) => {
     return (
         <>
             <InsertedPlanModal show={insertedPlanModal} setShow={setInsertedPlanModal}/>
-            <ErrorPlanConstraintsModal error={errorMessage} show={{showErrorModal: showErrorModal, setShowErrorModal: setShowErrorModal}}/>
+            <ErrorPlanConstraintsModal error={errorMessage}
+                                       show={{showErrorModal: showErrorModal, setShowErrorModal: setShowErrorModal}}/>
             <PlanTypeChooseModal setFullTimePlan={setFullTimePlan} show={showModal} setShow={setShowModal}/>
             <Row>
                 <div style={{height: "10vh"}}/>
@@ -132,7 +134,7 @@ const StudyPlanCompiler = (props) => {
                     <h2>Study plan Editor</h2>
                     <div>
                         CFU number: <span>{fullTimePlan ? "60 ≤" : "20 ≤"}  </span>
-                        <span className={ respectCfuConstraint() ? "plan-filled" : "plan-to-fill"}>{cfu}</span>
+                        <span className={respectCfuConstraint() ? "plan-filled" : "plan-to-fill"}>{cfu}</span>
                         <span>{fullTimePlan ? " ≤ 80 " : " ≤ 40"}  </span>
                     </div>
                     <CourseList setCfu={setCfu}
@@ -145,9 +147,11 @@ const StudyPlanCompiler = (props) => {
                     />
 
                     <div style={{height: "5vh"}}/>
-                    <Button style={{width: "100%"}} onClick={insertPlanHandle} variant="outline-primary">Save changes</Button>
+                    <Button style={{width: "100%"}} onClick={insertPlanHandle} variant="outline-primary">Save
+                        changes</Button>
                     <div style={{height: "10px"}}/>
-                    <Button style={{width: "100%"}} onClick={() => navigate("/studyplan/view")} variant="outline-danger">Cancel</Button>
+                    <Button style={{width: "100%"}} onClick={() => navigate("/studyplan/view")}
+                            variant="outline-danger">Cancel</Button>
                     <div style={{height: "5vh"}}/>
                 </Col>
             </Row>

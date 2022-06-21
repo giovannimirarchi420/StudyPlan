@@ -6,7 +6,10 @@ const PlanTypeChooseModal = (props) => {
     const navigate = useNavigate()
 
     return (
-        <Modal show={props.show} onHide={() => {props.setShow(false); navigate("/home")}}>
+        <Modal show={props.show} onHide={() => {
+            props.setShow(false);
+            navigate("/home")
+        }}>
             <Modal.Header closeButton>
                 <Modal.Title>Choose study plan type</Modal.Title>
             </Modal.Header>
@@ -18,9 +21,18 @@ const PlanTypeChooseModal = (props) => {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button onClick={() => {props.setShow(false); navigate("/home")}} variant="outline-danger">Close</Button>
-                <Button onClick={ () => {props.setFullTimePlan(true); props.setShow(false)}} variant="outline-success">Full Time</Button>
-                <Button onClick={ () => {props.setFullTimePlan(false); props.setShow(false)}} variant="outline-secondary">Part Time</Button>
+                <Button onClick={() => {
+                    props.setShow(false);
+                    navigate("/home")
+                }} variant="outline-danger">Close</Button>
+                <Button onClick={() => {
+                    props.setFullTimePlan(true);
+                    props.setShow(false)
+                }} variant="outline-success">Full Time</Button>
+                <Button onClick={() => {
+                    props.setFullTimePlan(false);
+                    props.setShow(false)
+                }} variant="outline-secondary">Part Time</Button>
             </Modal.Footer>
         </Modal>
     )

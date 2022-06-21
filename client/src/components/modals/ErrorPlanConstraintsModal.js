@@ -14,7 +14,7 @@ const ErrorPlanConstraintsModal = (props) => {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button onClick={() => props.show.setShowErrorModal(false) } variant="outline-danger">Close</Button>
+                <Button onClick={() => props.show.setShowErrorModal(false)} variant="outline-danger">Close</Button>
             </Modal.Footer>
         </Modal>
     )

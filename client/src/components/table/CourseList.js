@@ -3,27 +3,28 @@ import {useEffect, useState} from "react";
 import {getCourseList, getPlan} from "../../utils/API";
 import "../../css/style.css"
 import TableRow from "./TableRow";
+import GeneralErrorModal from "../modals/GeneralErrorModal";
 
 const CourseList = (props) => {
 
     const [isLoading, setLoading] = useState(true);
     const [courseList, setCourseList] = useState([])
     const [studyPlan, setStudyPlan] = useState([])
+    const [showErrorModal, setShowErrorModal] = useState(false)
 
-
-    useEffect( () => {
+    useEffect(() => {
         const doStuff = async () => {
             //Retrieve courses
             let courses = await getCourseList()
             setCourseList(courses)
 
             //Retrieve plan
-            if(props.loggedIn && props.user.studyPlanCompiled) {
+            if (props.loggedIn && props.user.studyPlanCompiled) {
                 let plan = await getPlan()
                 let planList = courses.filter((course) => plan.course_list.split(',').includes(course.id))
-                if( ! (plan.course_list === undefined || plan.course_list.length <= 0) ) {
+                if (!(plan.course_list === undefined || plan.course_list.length <= 0)) {
                     setStudyPlan(planList)
-                    if(props.setSelectedCourse){
+                    if (props.setSelectedCourse) {
                         props.setSelectedCourse(planList)
                     }
                     //Retrieve cfu number
@@ -32,14 +33,17 @@ const CourseList = (props) => {
                     props.setCfu(cfu)
                 }
 
-                if(props.viewPlan){
+                if (props.viewPlan) {
                     setCourseList(planList)
                 }
             }
             setLoading(false)
         }
+        try {
+            doStuff().then(() => setShowErrorModal(false)).catch(() => setShowErrorModal(true))
+        } catch (err) {
 
-        doStuff()
+        }
     }, [props.user])
 
     const selectCondition = (course) => {
@@ -47,22 +51,22 @@ const CourseList = (props) => {
     }
 
     const isSelectable = (thisCourse) => {
-        if(!props.loggedIn){
+        if (!props.loggedIn) {
             return false
         }
         let incompatibilityList = []
 
-        if(props.selectedCourse != null){
-            if(props.selectedCourse.map(course => course.id).includes(thisCourse.id)){
+        if (props.selectedCourse != null) {
+            if (props.selectedCourse.map(course => course.id).includes(thisCourse.id)) {
                 return true
             }
         }
 
-        if(thisCourse.max_students && !(thisCourse.students_number < thisCourse.max_students)){
+        if (thisCourse.max_students && !(thisCourse.students_number < thisCourse.max_students)) {
             return false
         }
 
-        if(props.selectedCourse != null) {
+        if (props.selectedCourse != null) {
             //Create incompatibility list
             props.selectedCourse.forEach((course) => {
                 if (course.incompatibility !== null && course.incompatibility !== "") {
@@ -90,6 +94,7 @@ const CourseList = (props) => {
 
     return (
         <>
+            <GeneralErrorModal show={showErrorModal} setShow={setShowErrorModal}/>
             <Row>
                 <div style={{height: "5vh"}}/>
             </Row>

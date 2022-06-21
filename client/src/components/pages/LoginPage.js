@@ -2,19 +2,22 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {useState} from "react";
 import {getCourseList, login} from "../../utils/API";
 import {useNavigate} from "react-router-dom";
+import GeneralErrorModal from "../modals/GeneralErrorModal";
 
 const LoginPage = (props) => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const [showErrorModal, setShowErrorModal] = useState(false)
     const navigate = useNavigate()
 
     let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const handleLogin = (evt) => {
         evt.preventDefault()
-        if(!email.match(emailRegex)){
+        setShowErrorModal(false)
+        if (!email.match(emailRegex)) {
             setErrorMessage("Please insert a valid email address.")
             return;
         } else {
@@ -23,23 +26,27 @@ const LoginPage = (props) => {
 
         login({username: email, password: password})
             .then(user => {
-                if(user.id === undefined){
-                    setErrorMessage(user.message)
-                    return
+                console.log("then")
+                if (user.id === undefined) {
+                    setErrorMessage("Error")
                 }
                 props.setUser(user)
                 getCourseList()
-                    .then( courses => {
+                    .then(courses => {
                         props.setCourses(courses)
+                        navigate("/home")
                     })
                     .catch()
-                navigate("/home")
+
             })
-            .catch(err => setErrorMessage(err))
+            .catch(err => {
+                setShowErrorModal(true)
+            })
     }
 
     return (
         <Container>
+            <GeneralErrorModal show={showErrorModal} setShow={setShowErrorModal}/>
             <Row>
                 <div style={{height: "20vh"}}/>
             </Row>

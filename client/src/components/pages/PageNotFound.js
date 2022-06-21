@@ -3,18 +3,18 @@ import {useNavigate} from "react-router-dom";
 
 const PageNotFound = (props) => {
 
-  const navigate = useNavigate()
+    const navigate = useNavigate()
 
-  return (
-      <>
-          <Row>
-              <Col>
-                  <h1>Page not found</h1>
-                  <Button onClick={() => navigate("/")} variant={"outline-info"}>Home</Button>
-              </Col>
-          </Row>
-      </>
-  )
+    return (
+        <>
+            <Row>
+                <Col>
+                    <h1>Page not found</h1>
+                    <Button onClick={() => navigate("/")} variant={"outline-info"}>Home</Button>
+                </Col>
+            </Row>
+        </>
+    )
 }
 
 export default PageNotFound
