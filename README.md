@@ -42,7 +42,7 @@
 - `UserCard` (in `src/components/UserCard.js`): it is the card containing user picture and principals information
 - `StudyPlanCompiler` (in `src/components/pages/StudyPlanCompiler.js`): it is the page for the study plan editing
 - `StudyPlanViewer` (in `scr/components/StudyPlanViewer.js`): it is the page for the study plan visualization
-- `DeletePlanModal`, `GeneralErrorModal`, `InsertedPlanModal`, and `PlanTypeChooseModal` (in `src/components/modals/`): DeletePlanModal appear when you try to delete the study plan, PlanTypeChooseModal is used to choose study plan type, GeneralErrorModal is shown when some errors occur (e.g. server down)
+- `DeletePlanModal`, `GeneralErrorModal`, `InsertedPlanModal`, `ErrorPlanConstraintsModal` and `PlanTypeChooseModal` (in `src/components/modals/`): DeletePlanModal appear when you try to delete the study plan, PlanTypeChooseModal is used to choose study plan type, ErrorPlanConstraintsModal show up if there are unsatisfied constrains during study plan editing phase, GeneralErrorModal is shown when some errors occur (e.g. server down)
 
 ## Screenshots
 
