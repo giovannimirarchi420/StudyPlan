@@ -67,14 +67,5 @@ const incompatibilityCheck = (courseList, incompatibilityList) => {
 }
 
 const cfuNumberCheck = (isFullTime, cfuNumbers) => {
-    if(isFullTime){
-        if(cfuNumbers >= 60 && cfuNumbers <= 80){
-            return true
-        }
-    } else {
-        if(cfuNumbers >= 20 && cfuNumbers <= 40){
-            return true
-        }
-    }
-    return false
+    return (isFullTime && (cfuNumbers >= 60 && cfuNumbers <= 80)) || (!isFullTime && (cfuNumbers >= 20 && cfuNumbers <= 40));
 }

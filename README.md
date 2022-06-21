@@ -13,13 +13,13 @@
 
 - POST `/api/login` - login
     - The request body contains email and password
-    - response body contains user id, username and email, also a sessionID through cookies is provided
+    - response body contains the user object
 - DELETE `/api/login` - logout
   - The server response with status 200 OK.
 - GET `/api/courses` - return the list of course
-- GET `/api/courses/:id` - find the course by id
+- GET `/api/courses/:id` - find course by id
 - GET `/api/studyplan` - return the study plan of the logged user
-- POST `/api/studyplan/submit` used to store score of signed user
+- POST `/api/studyplan/submit` - store study plan on db
     - The request take a body containing the list of courses and if it is a full-time or part-time study plan.
     - The server response with status 201 if ok, 400 else
     - This endpoint is in charge also to do the constraints' validation.

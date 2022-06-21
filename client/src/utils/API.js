@@ -47,6 +47,7 @@ exports.logout = () => {
             .catch((error) => reject(error))
     })
 }
+
 exports.deletePlan = () => {
     return new Promise((resolve, reject) => {
         fetch("../api/studyplan", {
@@ -71,6 +72,7 @@ exports.updatePlan = (plan) => {
             .catch(err => reject(err))
     })
 }
+
 exports.insertPlan = (plan) => {
     return new Promise((resolve, reject) => {
         fetch("../api/studyplan/submit", {

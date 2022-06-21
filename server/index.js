@@ -5,6 +5,7 @@ const app = express()
 const dao = require('./utils/DataDao.js');
 const validator = require('./utils/StudyPlanValidator.js');
 const {setPlanCompiled} = require("./utils/DataDao");
+const utils = require("./utils/Utils.js")
 const LocalStrategy = require('passport-local').Strategy;
 const port = 3001
 
@@ -36,7 +37,7 @@ passport.deserializeUser(async (email, done) => {
 });
 
 app.use(session({
-    secret: 'asupersecretsetenceguessme',
+    secret: 'asupersecretsentenceguessme',
     resave: false,
     saveUninitialized: false
 }));
@@ -85,25 +86,43 @@ app.post("/api/login", function(req, res, next) {
 });
 
 app.post("/api/studyplan/submit", isLoggedIn, async (req, res) => {
+    //INPUT VALIDATION
     validator.validate(req.body.fullTime, req.body.courses)
         .then( validationResult => {
             if(validationResult.success){
+
+                //INSERT STUDY PLAN
                 dao.insertStudyPlan(req.user, req.body.courses)
                     .then( () => {
-                        setPlanCompiled(req.user.id, true)
+
+                        //SET PLAN COMPILED FLAG
+                        dao.setPlanCompiled(req.user.id, true)
                             .then(() => {
+
+                                //INCREASE STUDENTS NUMBER
                                 req.body.courses.forEach((course) => {
                                     dao.increaseStudentsNumber(course)
-                                        .catch((err) => res.status(400).end())
+                                        .catch( async (err) => {
+                                            await utils.doRollbackDecreaseStudentNumber(req.user.id, true, req.body.courses, course)
+                                            res.status(400).end()
+                                        })
                                 })
+
+                                //SET STUDY PLAN TYPE FLAG
                                 dao.setStudyPlanType(req.user.id, req.body.fullTime)
                                     .then(() => res.status(201).end())
-                                    .catch((err) => res.status(400).end())
+                                    .catch( async (err) => {
+                                        await utils.doRollbackIncreaseStudentNumber(req.user.id, true, req.body.courses, course)
+                                        res.status(400).end()
+                                    })
                             })
-                            .catch((err) => res.status(400).end())
+                            .catch( async (err) => { //SET PLAN COMPILED CATCH
+                                await utils.doRollbackPlan(req.user.id)
+                                res.status(400).end()
+                            })
                     })
-                    .catch( (err) => res.status(400).end())
-                } else {
+                    .catch( (err) => res.status(400).end()) //INSERT STUDY PLAN CATCH
+            } else {
                     res.json(validationResult.message).status(400).end()
                 }
             })
@@ -120,24 +139,30 @@ app.patch("/api/studyplan/submit", isLoggedIn, (req, res) => {
                             dao.updatePlan(req.user.id, req.body.courses)
                                 .then(() => res.status(204).end())
                                 .catch(() => res.status(400).end())
+
                             const planIdsToDecreaseStudentNumber = plan.course_list.split(",")
                                 .filter((course) => !req.body.courses.includes(course))
+
                             planIdsToDecreaseStudentNumber.forEach((courseId) => {
                                 dao.decreaseStudentsNumber(courseId)
-                                    .catch((err) => {
-                                        console.log(err)
+                                    .catch( async () => {
+                                        await utils.doRollbackDecreaseStudentNumber(planIdsToDecreaseStudentNumber, courseId)
                                         res.status(400).end()
                                     })
                             })
+
                             const planIdsToIncrementStudentNumber = req.body.courses
                                 .filter((course) => !plan.course_list.split(",").includes(course))
+
                             planIdsToIncrementStudentNumber.forEach((courseId) => {
                                 dao.increaseStudentsNumber(courseId)
-                                    .catch((err) => {
-                                        console.log(err)
+                                    .catch( async () => {
+                                        await utils.doRollbackDecreaseStudentNumber(planIdsToIncrementStudentNumber, null)
+                                        await utils.doRollbackOnlyIncreaseStudentNumber(planIdsToIncrementStudentNumber, courseId)
                                         res.status(400).end()
                                     })
                             })
+
                         } else {
                             res.json(validationResult.message).status(400).end()
                         }
@@ -155,7 +180,10 @@ app.delete("/api/studyplan/", isLoggedIn, async (req, res) => {
     dao.deletePlan(req.user.id)
         .then( () => {
             plan.course_list.split(",").forEach((courseId) => {
-                dao.decreaseStudentsNumber(courseId).catch((err) => res.status(400).json(err).end())
+                dao.decreaseStudentsNumber(courseId).catch( async (err) => {
+                    await utils.doRollbackDecreaseStudentNumber(plan.course_list.split(","), courseId)
+                    res.status(400).json(err).end()
+                })
             })
             res.status(204).end()
         })

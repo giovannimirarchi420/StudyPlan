@@ -110,11 +110,8 @@ const StudyPlanCompiler = (props) => {
     }
 
     const respectCfuConstraint = () => {
-        if ((fullTimePlan && (cfu >= 60 && cfu <= 80)) || (!fullTimePlan && (cfu >= 20 && cfu <= 40))) {
-            return true
-        } else {
-            return false
-        }
+        return (fullTimePlan && (cfu >= 60 && cfu <= 80)) || (!fullTimePlan && (cfu >= 20 && cfu <= 40));
+
     }
 
     return (

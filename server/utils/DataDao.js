@@ -45,10 +45,7 @@ exports.setPlanCompiled = (userId, planCompiled) => {
                 reject(err);
                 return;
             }
-            if (out === undefined){
-                return resolve('User not found');
-            }
-            resolve("Done")
+            resolve()
         })
     })
 }
@@ -80,9 +77,6 @@ exports.updatePlan = (id, plan) => {
                 reject(err);
                 return;
             }
-            if (out === undefined){
-                return resolve('An error occurred updating plan');
-            }
             resolve("Done")
         })
     })
@@ -91,7 +85,7 @@ exports.updatePlan = (id, plan) => {
 exports.increaseStudentsNumber = (course) => {
     return new Promise( (resolve, reject) => {
         const sql = "UPDATE courses SET students_number = students_number + 1 WHERE id = ?"
-        db.get(sql, [course], (err, out) => {
+        db.get(sql, [course], (err) => {
             if(err){
                 reject(err);
                 return;
@@ -104,7 +98,7 @@ exports.increaseStudentsNumber = (course) => {
 exports.decreaseStudentsNumber = (course) => {
     return new Promise( (resolve, reject) => {
         const sql = "UPDATE courses SET students_number = students_number - 1 WHERE id = ?"
-        db.get(sql, [course], (err, out) => {
+        db.get(sql, [course], (err) => {
             if(err){
                 reject(err);
                 return;
@@ -125,7 +119,7 @@ exports.getUser = (email, password) => {
             }
             else {
                 const user = {id: row.id, email: row.email, fullTime: row.full_time, studyPlanCompiled: row.study_plan_compiled, name: row.name, surname: row.surname};
-                // check the hashes with an async call, given that the operation may be CPU-intensive (and we don't want to block the server)
+
                 bcrypt.compare(password, row.password).then(result => {
                     if(result) {
                         resolve(user);
@@ -177,7 +171,7 @@ exports.getCourseByIds = (ids) => {
 exports.insertStudyPlan = (user, courseList) => {
     return new Promise( (resolve, reject) => {
         const sql = "INSERT INTO study_plans (user_id, course_list) VALUES (?, ?)"
-        db.get(sql, [user.id, courseList], (err, out) => {
+        db.get(sql, [user.id, courseList], (err) => {
             if(err){
                 reject(err);
             }
